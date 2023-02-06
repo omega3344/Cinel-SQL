@@ -35,8 +35,8 @@ CREATE VIEW P9 AS
 SELECT idVoo, cidadePartidas.cidade, cidadeChegadas.cidade FROM cidadePartidas, cidadeChegadas;
 
 
-
-10
+CREATE VIEW P10 AS
+SELECT idVoo FROM voo JOIN aeroporto ON idAeroporto=idAeroportoPartida AND idAeroportoPartida=1 AND idAeroportoChegada=3;
 
 CREATE VIEW P11 AS
 SELECT pais, COUNT(*) FROM aeroporto GROUP BY pais HAVING COUNT(pais)>2;
@@ -48,3 +48,4 @@ SELECT pais, COUNT(*) FROM aeroporto GROUP BY pais HAVING COUNT(pais)>2;
 CREATE VIEW P14 AS
 SELECT fabricante, versao, COUNT(versao) AS total FROM aviao JOIN modelo USING (idModelo) GROUP BY versao;
 
+15
