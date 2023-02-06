@@ -70,8 +70,8 @@ GROUP BY habilitacao;
 -- exercício 15
 SELECT id AS 'idFormando', nome, apelido, genero, situacaoEmprego, TIMESTAMPDIFF(year, dataNascimento, NOW()) AS 'idade', dataNascimento 
 FROM formando 
-WHERE genero = 'masculino' 
-AND TIMESTAMPDIFF(year, dataNascimento, NOW())=(SELECT MAX(TIMESTAMPDIFF(year, dataNascimento, NOW())) FROM formando);
+WHERE dataNascimento = (SELECT MIN(dataNascimento) FROM formando 
+WHERE genero = 'masculino' AND situacaoEmprego = 'desempregado' );
 
 -- exercício 16
 SELECT id AS 'idFormando', nome, apelido, genero, situacaoEmprego, TIMESTAMPDIFF(year, dataNascimento, NOW()) AS 'idade', dataNascimento 
@@ -100,3 +100,22 @@ ORDER BY dataNascimento;
 -- exercício 19
 SELECT CONCAT(MAX(TIMESTAMPDIFF(year, dataNascimento, NOW())) - MIN(TIMESTAMPDIFF(year, dataNascimento, NOW())), ' anos.') AS diferenca 
 FROM formando;
+
+-- exercício 20
+SELECT idFormando, nome, apelido, telemovel, idCurso FROM curso LEFT JOIN inscricao USING(idCurso) JOIN formando USING(idFormando) ORDER BY nome, apelido, idCurso ASC;
+
+-- exercício 21
+SELECT idFormando, nome, apelido, telemovel FROM formando WHERE idFormando NOT IN (SELECT idFormando FROM formando JOIN inscricao USING(idFormando)) ORDER BY nome, apelido ASC;
+
+-- exercício 22
+SELECT COUNT(id), idCurso, idFormando FROM inscricao GROUP BY idFormando HAVING COUNT(id)>1;
+
+-- exercício 23
+SELECT COUNT(idFormando) AS 'Total de formandos inscritos em todos os cursos' FROM formando WHERE idFormando IN (SELECT idFormando FROM inscricao GROUP BY idFormando);
+
+-- exercício 24
+SELECT COUNT(idFormando) AS 'Total de formandos não inscritos' FROM formando WHERE idFormando NOT IN (SELECT idFormando FROM inscricao);
+
+-- exercício 25
+SELECT COUNT(idFormando) AS 'Total de formandos não inscritos', genero FROM formando WHERE idFormando NOT IN (SELECT idFormando FROM inscricao) GROUP BY genero;
+
