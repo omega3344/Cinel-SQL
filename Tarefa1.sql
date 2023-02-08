@@ -66,7 +66,6 @@ FROM aeroporto
 GROUP BY pais 
 HAVING COUNT(pais)>2;
 
-12
 CREATE VIEW P12 AS
 SELECT pais, COUNT(pais) as total
 FROM aeroporto
@@ -79,7 +78,6 @@ HAVING total = (
         GROUP BY pais
     ) filtro);
 
-13
 CREATE VIEW P13 AS
 SELECT pais, COUNT(pais) as total
 FROM aeroporto
