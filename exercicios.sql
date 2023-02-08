@@ -45,7 +45,8 @@ SELECT id, nome, apelido, dataNascimento, NOW() AS 'Data atual', TIMESTAMPDIFF(y
 FROM formando;
 
 -- exercício 10
-CREATE VIEW exercicio10 AS SELECT situacaoEmprego, AVG(TIMESTAMPDIFF(year,dataNascimento,NOW())) AS 'Idade do formando' 
+CREATE VIEW exercicio10 AS
+SELECT situacaoEmprego, AVG(TIMESTAMPDIFF(year,dataNascimento,NOW())) AS 'Idade do formando' 
 FROM formando 
 GROUP BY situacaoEmprego;
 
@@ -102,20 +103,43 @@ SELECT CONCAT(MAX(TIMESTAMPDIFF(year, dataNascimento, NOW())) - MIN(TIMESTAMPDIF
 FROM formando;
 
 -- exercício 20
-SELECT idFormando, nome, apelido, telemovel, idCurso FROM curso LEFT JOIN inscricao USING(idCurso) JOIN formando USING(idFormando) ORDER BY nome, apelido, idCurso ASC;
+SELECT idFormando, nome, apelido, telemovel, idCurso 
+FROM curso LEFT JOIN inscricao USING(idCurso) JOIN formando USING(idFormando) 
+ORDER BY nome, apelido, idCurso ASC;
 
 -- exercício 21
-SELECT idFormando, nome, apelido, telemovel FROM formando WHERE idFormando NOT IN (SELECT idFormando FROM formando JOIN inscricao USING(idFormando)) ORDER BY nome, apelido ASC;
+SELECT idFormando, nome, apelido, telemovel 
+FROM formando WHERE idFormando NOT IN (SELECT idFormando FROM formando JOIN inscricao USING(idFormando)) 
+ORDER BY nome, apelido ASC;
 
 -- exercício 22
-SELECT COUNT(id), idCurso, idFormando FROM inscricao GROUP BY idFormando HAVING COUNT(id)>1;
+SELECT COUNT(id), idCurso, idFormando 
+FROM inscricao 
+GROUP BY idFormando 
+HAVING COUNT(id)>1;
 
 -- exercício 23
-SELECT COUNT(idFormando) AS 'Total de formandos inscritos em todos os cursos' FROM formando WHERE idFormando IN (SELECT idFormando FROM inscricao GROUP BY idFormando);
+SELECT COUNT(idFormando) AS 'Total de formandos inscritos em todos os cursos' 
+FROM formando 
+WHERE idFormando IN (
+    SELECT idFormando 
+    FROM inscricao
+    GROUP BY idFormando
+    );
 
 -- exercício 24
-SELECT COUNT(idFormando) AS 'Total de formandos não inscritos' FROM formando WHERE idFormando NOT IN (SELECT idFormando FROM inscricao);
+SELECT COUNT(idFormando) AS 'Total de formandos não inscritos' 
+FROM formando 
+WHERE idFormando NOT IN (
+    SELECT idFormando 
+    FROM inscricao
+    );
 
 -- exercício 25
-SELECT COUNT(idFormando) AS 'Total de formandos não inscritos', genero FROM formando WHERE idFormando NOT IN (SELECT idFormando FROM inscricao) GROUP BY genero;
+SELECT COUNT(idFormando) AS 'Total de formandos não inscritos', genero 
+FROM formando 
+WHERE idFormando NOT IN (
+    SELECT idFormando 
+    FROM inscricao) 
+    GROUP BY genero;
 
