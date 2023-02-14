@@ -46,14 +46,14 @@ CREATE VIEW superior AS
 SELECT *
 FROM colaborador;
 CREATE VIEW P10 AS
-SELECT superior.designacao,colaborador.designacao AS superior
+SELECT colaborador.designacao, superior.designacao AS superior
 FROM colaborador JOIN superior 
-ON superior.idSuperiorHierarquico = colaborador.idColaborador;
+ON superior.idColaborador = colaborador.idSuperiorHierarquico;
 
 CREATE VIEW P11 AS
-SELECT superior.designacao,colaborador.designacao AS superior
-FROM superior LEFT JOIN colaborador 
-ON superior.idSuperiorHierarquico = colaborador.idColaborador;
+SELECT colaborador.designacao, superior.designacao AS superior
+FROM colaborador LEFT JOIN superior 
+ON superior.idColaborador = colaborador.idSuperiorHierarquico;
 
 CREATE VIEW P12 AS
 SELECT departamento.designacao, MAX(vencimento) AS vencimentoMaximo 
@@ -69,20 +69,20 @@ SELECT MAX(vencimento)-MIN(vencimento) AS diferencaVencimentos
 FROM colaborador;
 
 CREATE VIEW P15 AS
-SELECT superior.designacao, colaborador.designacao AS superior,  colaborador.vencimento - superior.vencimento
+SELECT colaborador.designacao, superior.designacao AS superior,  superior.vencimento - colaborador.vencimento
 FROM colaborador JOIN superior 
-ON superior.idSuperiorHierarquico = colaborador.idColaborador;
+ON superior.idColaborador = colaborador.idSuperiorHierarquico;
 
 CREATE VIEW P16 AS
 SELECT MAX(diferenca) AS diferencaMaxima 
 FROM (
-SELECT (colaborador.vencimento - superior.vencimento) AS diferenca 
+SELECT (superior.vencimento - colaborador.vencimento) AS diferenca 
 FROM colaborador JOIN superior
-ON superior.idSuperiorHierarquico = colaborador.idColaborador
-WHERE superior.vencimento = (
-    SELECT MIN(superior.vencimento) 
+ON colaborador.idSuperiorHierarquico = superior.idColaborador
+WHERE colaborador.vencimento = (
+    SELECT MIN(colaborador.vencimento) 
     FROM superior)
-) AS m;
+) AS dif;
 
 CREATE VIEW P17 AS
 SELECT departamento.designacao, AVG(vencimento) AS vencimentoMedio 
@@ -90,4 +90,22 @@ FROM departamento JOIN colaborador USING(idDepartamento)
 GROUP BY idDepartamento
 HAVING AVG(vencimento) > 1300;
 
+CREATE VIEW P18 AS
+SELECT colaborador.designacao
+FROM projeto JOIN tarefas USING(idProjeto) JOIN colaborador USING(idColaborador)
+WHERE projeto.idDepartamento != colaborador.idDepartamento
+GROUP BY idColaborador;
 
+CREATE VIEW P19 AS
+SELECT colaborador.designacao
+FROM projeto JOIN tarefas USING(idProjeto) JOIN colaborador USING(idColaborador)
+WHERE projeto.idDepartamento = colaborador.idDepartamento
+
+CREATE VIEW P20 AS
+SELECT colaborador.designacao
+FROM projeto JOIN tarefas USING(idProjeto) JOIN colaborador USING(idColaborador)
+WHERE projeto.idDepartamento = colaborador.idDepartamento AND idColaborador NOT IN (
+    SELECT colaborador.idColaborador
+FROM projeto JOIN tarefas USING(idProjeto) JOIN colaborador USING(idColaborador)
+WHERE projeto.idDepartamento != colaborador.idDepartamento
+GROUP BY idColaborador);

@@ -90,7 +90,7 @@ HAVING peso <= ALL (
 CREATE VIEW total_pescado AS
 SELECT idPescaria, idBarco, SUM(peso) AS total
 FROM pescado JOIN pescaria USING(idPescaria)
-GROUP BY idPescaria
+GROUP BY idPescaria;
 CREATE VIEW P15 AS
 SELECT pescaria.idPescaria, total_pescado.idBarco, pesoMaximo, total, pescador.nome
 FROM total_pescado JOIN barco USING(idBarco) JOIN pescaria USING(idPescaria) JOIN pescador_pescaria USING(idPescaria)JOIN pescador USING(idPescador) 
