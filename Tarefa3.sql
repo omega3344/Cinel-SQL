@@ -39,7 +39,9 @@ GROUP BY projeto.designacao;
 
 CREATE VIEW P9 AS
 SELECT colaborador.designacao, SUM(tarefas.horas) AS totalHoras
-FROM colaborador JOIN tarefas USING(idColaborador) JOIN projeto USING(idProjeto)
+FROM colaborador 
+    JOIN tarefas USING(idColaborador) 
+    JOIN projeto USING(idProjeto)
 GROUP BY idColaborador;
 
 CREATE VIEW superior AS
@@ -106,6 +108,6 @@ SELECT colaborador.designacao
 FROM projeto JOIN tarefas USING(idProjeto) JOIN colaborador USING(idColaborador)
 WHERE projeto.idDepartamento = colaborador.idDepartamento AND idColaborador NOT IN (
     SELECT colaborador.idColaborador
-FROM projeto JOIN tarefas USING(idProjeto) JOIN colaborador USING(idColaborador)
-WHERE projeto.idDepartamento != colaborador.idDepartamento
-GROUP BY idColaborador);
+    FROM projeto JOIN tarefas USING(idProjeto) JOIN colaborador USING(idColaborador)
+    WHERE projeto.idDepartamento != colaborador.idDepartamento
+    GROUP BY idColaborador);
