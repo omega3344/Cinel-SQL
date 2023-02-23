@@ -63,7 +63,7 @@ INSERT INTO utilizador VALUES (NULL, a, CURRENT_TIMESTAMP);
 SET @idUtilizador = LAST_INSERT_ID();
 SET @token = SUBSTRING(SHA1(RAND()),1, 40);
 INSERT INTO token VALUES (NULL, @idUtilizador, @token, CURRENT_TIMESTAMP);
-INSERT INTO estado_utilizador VALUES (NULL, 1, idUtilizador, CURRENT_TIMESTAMP);
+INSERT INTO estado_utilizador VALUES (NULL, 1, @idUtilizador, CURRENT_TIMESTAMP);
 END
 $$ DELIMITER ; 
 
